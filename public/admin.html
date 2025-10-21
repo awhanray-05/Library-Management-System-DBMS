@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Library Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-book"></i>
+                    <span>Library Admin</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#books" class="nav-item" data-section="books">
+                    <i class="fas fa-book"></i>
+                    <span>Books</span>
+                </a>
+                <a href="#members" class="nav-item" data-section="members">
+                    <i class="fas fa-users"></i>
+                    <span>Members</span>
+                </a>
+                <a href="#transactions" class="nav-item" data-section="transactions">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="#fines" class="nav-item" data-section="fines">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Fines</span>
+                </a>
+                <a href="#reports" class="nav-item" data-section="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <span id="userName">Admin User</span>
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalMembers">0</h3>
+                            <p>Total Members</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalBooks">0</h3>
+                            <p>Total Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="availableBooks">0</h3>
+                            <p>Available Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="borrowedBooks">0</h3>
+                            <p>Borrowed Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="overdueBooks">0</h3>
+                            <p>Overdue Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalFines">$0</h3>
+                            <p>Total Fines</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="dashboard-section">
+                        <h3>Recent Transactions</h3>
+                        <div id="recentTransactions" class="table-container">
+                            <!-- Recent transactions will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="dashboard-section">
+                        <h3>Top Books</h3>
+                        <div id="topBooks" class="table-container">
+                            <!-- Top books will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Books Section -->
+            <section id="books" class="content-section">
+                <div class="section-header">
+                    <h2>Book Management</h2>
+                    <button class="btn btn-primary" onclick="showAddBookModal()">
+                        <i class="fas fa-plus"></i>
+                        Add Book
+                    </button>
+                </div>
+                
+                <div class="filters-bar">
+                    <div class="search-box">
+                        <input type="text" id="bookSearch" placeholder="Search books..." onkeyup="filterBooks()">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <select id="bookCategoryFilter" onchange="filterBooks()">
+                        <option value="">All Categories</option>
+                    </select>
+                    <select id="bookStatusFilter" onchange="filterBooks()">
+                        <option value="">All Status</option>
+                        <option value="AVAILABLE">Available</option>
+                        <option value="BORROWED">Borrowed</option>
+                        <option value="MAINTENANCE">Maintenance</option>
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>ISBN</th>
+                                <th>Category</th>
+                                <th>Available</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booksTableBody">
+                            <!-- Books will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Members Section -->
+            <section id="members" class="content-section">
+                <div class="section-header">
+                    <h2>Member Management</h2>
+                    <button class="btn btn-primary" onclick="showAddMemberModal()">
+                        <i class="fas fa-plus"></i>
+                        Add Member
+                    </button>
+                </div>
+                
+                <div class="filters-bar">
+                    <div class="search-box">
+                        <input type="text" id="memberSearch" placeholder="Search members..." onkeyup="filterMembers()">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <select id="memberStatusFilter" onchange="filterMembers()">
+                        <option value="">All Status</option>
+                        <option value="ACTIVE">Active</option>
+                        <option value="INACTIVE">Inactive</option>
+                        <option value="SUSPENDED">Suspended</option>
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Membership</th>
+                                <th>Borrowed Books</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersTableBody">
+                            <!-- Members will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="content-section">
+                <div class="section-header">
+                    <h2>Transaction Management</h2>
+                    <div class="action-buttons">
+                        <button class="btn btn-success" onclick="showIssueBookModal()">
+                            <i class="fas fa-book-medical"></i>
+                            Issue Book
+                        </button>
+                        <button class="btn btn-warning" onclick="showReturnBookModal()">
+                            <i class="fas fa-undo"></i>
+                            Return Book
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="filters-bar">
+                    <div class="search-box">
+                        <input type="text" id="transactionSearch" placeholder="Search transactions..." onkeyup="filterTransactions()">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <select id="transactionStatusFilter" onchange="filterTransactions()">
+                        <option value="">All Status</option>
+                        <option value="BORROWED">Borrowed</option>
+                        <option value="RETURNED">Returned</option>
+                        <option value="OVERDUE">Overdue</option>
+                    </select>
+                    <input type="date" id="transactionDateFrom" onchange="filterTransactions()">
+                    <input type="date" id="transactionDateTo" onchange="filterTransactions()">
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Member</th>
+                                <th>Book</th>
+                                <th>Issue Date</th>
+                                <th>Due Date</th>
+                                <th>Return Date</th>
+                                <th>Status</th>
+                                <th>Fine</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsTableBody">
+                            <!-- Transactions will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Fines Section -->
+            <section id="fines" class="content-section">
+                <div class="section-header">
+                    <h2>Fine Management</h2>
+                </div>
+                
+                <div class="filters-bar">
+                    <div class="search-box">
+                        <input type="text" id="fineSearch" placeholder="Search fines..." onkeyup="filterFines()">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <select id="fineStatusFilter" onchange="filterFines()">
+                        <option value="">All Status</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="PAID">Paid</option>
+                        <option value="WAIVED">Waived</option>
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fine ID</th>
+                                <th>Member</th>
+                                <th>Book</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="finesTableBody">
+                            <!-- Fines will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="content-section">
+                <div class="section-header">
+                    <h2>Reports</h2>
+                </div>
+                
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h3>Overdue Books Report</h3>
+                        <p>View all books that are currently overdue</p>
+                        <button class="btn btn-primary" onclick="generateOverdueReport()">
+                            Generate Report
+                        </button>
+                    </div>
+                    <div class="report-card">
+                        <h3>Member Activity Report</h3>
+                        <p>View member borrowing activity and statistics</p>
+                        <button class="btn btn-primary" onclick="generateMemberReport()">
+                            Generate Report
+                        </button>
+                    </div>
+                    <div class="report-card">
+                        <h3>Book Usage Report</h3>
+                        <p>View most popular books and usage statistics</p>
+                        <button class="btn btn-primary" onclick="generateBookReport()">
+                            Generate Report
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals will be added here -->
+    <div id="modalContainer"></div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/app.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

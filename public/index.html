@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-book"></i>
+                    <h1>Library Management System</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#search" class="nav-link">Search Books</a>
+                    <a href="#about" class="nav-link">About</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section id="home" class="hero">
+                <div class="hero-content">
+                    <h2>Welcome to Our Digital Library</h2>
+                    <p>Discover, borrow, and manage books with our comprehensive library management system</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="showLoginModal()">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                        <button class="btn btn-secondary" onclick="showRegisterModal()">
+                            <i class="fas fa-user-plus"></i>
+                            Register
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <i class="fas fa-book-reader"></i>
+                </div>
+            </section>
+
+            <!-- Search Section -->
+            <section id="search" class="search-section">
+                <div class="search-container">
+                    <h2>Search Books</h2>
+                    <div class="search-form">
+                        <div class="search-input-group">
+                            <input type="text" id="searchInput" placeholder="Search by title, author, or ISBN..." class="search-input">
+                            <button class="search-btn" onclick="searchBooks()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="search-filters">
+                            <select id="categoryFilter" class="filter-select">
+                                <option value="">All Categories</option>
+                            </select>
+                            <select id="authorFilter" class="filter-select">
+                                <option value="">All Authors</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="searchResults" class="search-results"></div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="about-section">
+                <div class="about-content">
+                    <h2>About Our Library</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-search"></i>
+                            <h3>Easy Search</h3>
+                            <p>Find books quickly with our advanced search functionality</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-book-open"></i>
+                            <h3>Digital Catalog</h3>
+                            <p>Access our complete digital catalog of books and resources</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-user-friends"></i>
+                            <h3>Member Portal</h3>
+                            <p>Track your borrowed books and manage your account</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-clock"></i>
+                            <h3>24/7 Access</h3>
+                            <p>Access your account and search books anytime, anywhere</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Login</h3>
+                    <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="login-tabs">
+                        <button class="tab-btn active" onclick="switchLoginTab('member')">Member</button>
+                        <button class="tab-btn" onclick="switchLoginTab('admin')">Admin/Librarian</button>
+                    </div>
+                    
+                    <!-- Member Login -->
+                    <form id="memberLoginForm" class="login-form">
+                        <div class="form-group">
+                            <label for="memberEmail">Email</label>
+                            <input type="email" id="memberEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="memberPassword">Password</label>
+                            <input type="password" id="memberPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+
+                    <!-- Admin Login -->
+                    <form id="adminLoginForm" class="login-form" style="display: none;">
+                        <div class="form-group">
+                            <label for="adminUsername">Username</label>
+                            <input type="text" id="adminUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminPassword">Password</label>
+                            <input type="password" id="adminPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Modal -->
+        <div id="registerModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Register as Member</h3>
+                    <button class="close-btn" onclick="closeModal('registerModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm" class="register-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea id="address" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="membershipType">Membership Type</label>
+                            <select id="membershipType">
+                                <option value="REGULAR">Regular</option>
+                                <option value="PREMIUM">Premium</option>
+                                <option value="STUDENT">Student</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2024 Library Management System. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Portal - Library Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/member.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="member-container">
+        <!-- Header -->
+        <header class="member-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-book"></i>
+                    <span>Library Portal</span>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <span id="memberName">Member Name</span>
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="member-nav">
+            <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#search" class="nav-item" data-section="search">
+                <i class="fas fa-search"></i>
+                <span>Search Books</span>
+            </a>
+            <a href="#borrowed" class="nav-item" data-section="borrowed">
+                <i class="fas fa-book-open"></i>
+                <span>My Books</span>
+            </a>
+            <a href="#fines" class="nav-item" data-section="fines">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Fines</span>
+            </a>
+            <a href="#profile" class="nav-item" data-section="profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="member-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="welcome-section">
+                    <h2>Welcome back, <span id="welcomeName">Member</span>!</h2>
+                    <p>Manage your library account and discover new books</p>
+                </div>
+
+                <div class="member-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="borrowedCount">0</h3>
+                            <p>Books Borrowed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="overdueCount">0</h3>
+                            <p>Overdue Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalFines">$0</h3>
+                            <p>Total Fines</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="dashboard-section">
+                        <h3>Currently Borrowed Books</h3>
+                        <div id="currentBorrowed" class="book-list">
+                            <!-- Currently borrowed books will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="dashboard-section">
+                        <h3>Recent Activity</h3>
+                        <div id="recentActivity" class="activity-list">
+                            <!-- Recent activity will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Search Section -->
+            <section id="search" class="content-section">
+                <div class="search-header">
+                    <h2>Search Books</h2>
+                    <p>Find and discover books in our library</p>
+                </div>
+
+                <div class="search-container">
+                    <div class="search-form">
+                        <div class="search-input-group">
+                            <input type="text" id="bookSearchInput" placeholder="Search by title, author, or ISBN..." class="search-input">
+                            <button class="search-btn" onclick="searchBooks()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="search-filters">
+                            <select id="bookCategoryFilter" class="filter-select">
+                                <option value="">All Categories</option>
+                            </select>
+                            <select id="bookAuthorFilter" class="filter-select">
+                                <option value="">All Authors</option>
+                            </select>
+                            <select id="bookAvailabilityFilter" class="filter-select">
+                                <option value="">All Books</option>
+                                <option value="available">Available Only</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="searchResults" class="search-results">
+                        <!-- Search results will be displayed here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Borrowed Books Section -->
+            <section id="borrowed" class="content-section">
+                <div class="section-header">
+                    <h2>My Borrowed Books</h2>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" onclick="filterBorrowedBooks('all')">All</button>
+                        <button class="filter-tab" onclick="filterBorrowedBooks('current')">Current</button>
+                        <button class="filter-tab" onclick="filterBorrowedBooks('overdue')">Overdue</button>
+                        <button class="filter-tab" onclick="filterBorrowedBooks('history')">History</button>
+                    </div>
+                </div>
+
+                <div class="borrowed-books-container">
+                    <div id="currentBorrowedBooks" class="book-section">
+                        <h3>Currently Borrowed</h3>
+                        <div id="currentBooksList" class="book-list">
+                            <!-- Currently borrowed books will be loaded here -->
+                        </div>
+                    </div>
+                    <div id="borrowedHistory" class="book-section">
+                        <h3>Borrowing History</h3>
+                        <div id="historyBooksList" class="book-list">
+                            <!-- Borrowing history will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fines Section -->
+            <section id="fines" class="content-section">
+                <div class="section-header">
+                    <h2>My Fines</h2>
+                    <div class="fines-summary">
+                        <div class="summary-card">
+                            <h3 id="pendingFines">$0</h3>
+                            <p>Pending Fines</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3 id="paidFines">$0</h3>
+                            <p>Paid Fines</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fines-container">
+                    <div class="fines-filters">
+                        <select id="fineStatusFilter" onchange="filterFines()">
+                            <option value="">All Fines</option>
+                            <option value="PENDING">Pending</option>
+                            <option value="PAID">Paid</option>
+                            <option value="WAIVED">Waived</option>
+                        </select>
+                    </div>
+                    <div id="finesList" class="fines-list">
+                        <!-- Fines will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="content-section">
+                <div class="section-header">
+                    <h2>My Profile</h2>
+                    <button class="btn btn-secondary" onclick="editProfile()">
+                        <i class="fas fa-edit"></i>
+                        Edit Profile
+                    </button>
+                </div>
+
+                <div class="profile-container">
+                    <div class="profile-info">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h3 id="profileName">Member Name</h3>
+                            <p id="profileEmail">member@email.com</p>
+                            <p id="profileMembership">Regular Member</p>
+                            <p id="profileJoinDate">Joined: January 2024</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-form" id="profileForm" style="display: none;">
+                        <form id="updateProfileForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profileFirstName">First Name</label>
+                                    <input type="text" id="profileFirstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileLastName">Last Name</label>
+                                    <input type="text" id="profileLastName" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profileEmailInput">Email</label>
+                                <input type="email" id="profileEmailInput" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profilePhone">Phone</label>
+                                <input type="tel" id="profilePhone">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileAddress">Address</label>
+                                <textarea id="profileAddress" rows="3"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                                <button type="button" class="btn btn-secondary" onclick="cancelEditProfile()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/app.js"></script>
+    <script src="js/member.js"></script>
+</body>
+</html>
